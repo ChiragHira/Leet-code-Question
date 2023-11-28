@@ -9,28 +9,49 @@
  * }
  */
 class Solution {
-    public boolean isPalindrome(ListNode head) {
-        ArrayList<Integer> list = new ArrayList<>();
-        ListNode temp = head;
 
-        //Converting linklist to ArrayList
-        while(temp!=null){
-            list.add(temp.val);
-            temp = temp.next;
+    public ListNode reverse (ListNode middle){
+        ListNode previous = null;
+        ListNode current = middle;
+        ListNode next = null;
+
+        while(current!=null){
+            next = current.next;
+            current.next = previous;
+            previous = current;
+            current = next;
         }
 
-        //Two Pointer
-        int low = 0;
-        int high = list.size()-1;
+        return previous;
+    }
 
-        while(low<high){
-            if(list.get(low)!=(list.get(high))){
+    public boolean isPalindrome(ListNode head) {
+        ListNode current = head;
+
+        if(head.next==null){
+            return true;
+        }
+
+        ListNode slow= head;
+        ListNode fast = head;
+
+        while(fast!=null && fast.next!=null ){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        ListNode middle = slow;
+        ListNode tail = reverse(middle);
+
+        while(tail!=current && tail!=null){
+            if(tail.val!=current.val){
                 return false;
             }
-            low++;
-            high--;
+            tail = tail.next;
+            current = current.next;
         }
 
         return true;
+
     }
 }
